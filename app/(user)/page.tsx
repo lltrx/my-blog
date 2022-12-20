@@ -1,8 +1,43 @@
-function HomePage() {
+import { previewData } from 'next/headers'
+import { groq } from 'next-sanity'
+import {client} from '../../lib/sanity.client'
+import PreviewSuspense from '../../components/utils/previewSuspense'
+import PreviewBlogList from '../../components/utils/previewBlogList'
+import BlogList from '../../components/utils/blogList'
+
+
+const query = groq`
+  *[_type == 'post'] {
+    ...,
+    author->,
+    categories[]->
+  } | order(_createdAt desc) 
+  
+`
+
+export default async function HomePage() {
+  if (!previewData()){
+    return (
+      <PreviewSuspense fallback={(
+        <div role="status">
+          <p className="text-center text-lg animate-pulse text-[#F7AB0A]">
+            Loading...
+          </p>
+        </div>
+      )}>
+
+        Preview mode 
+        <PreviewBlogList/>
+      </PreviewSuspense>
+    )
+  }
+
+  const posts = await client.fetch(query)
+
+
   return (
-    <div>
-    </div>
+    <BlogList posts={posts}/>
   )
 }
 
-export default HomePage
+
