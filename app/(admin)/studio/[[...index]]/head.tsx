@@ -8,7 +8,7 @@ export default function StudioHead() {
      <link 
           rel="icon"
           type="image/png"
-          size="32x32"
+          sizes="32x32"
           href="https://www.sanity.io/static/images/favicons/favicon-32x32.png"
      />
           </>

@@ -15,6 +15,8 @@ const query = groq`
   
 `
 
+export const revalidate = 10;
+
 export default async function HomePage() {
   if (!previewData()){
     return (
@@ -26,8 +28,7 @@ export default async function HomePage() {
         </div>
       )}>
 
-        Preview mode 
-        <PreviewBlogList/>
+        <PreviewBlogList query={query}/>
       </PreviewSuspense>
     )
   }

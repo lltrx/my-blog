@@ -9,8 +9,8 @@ type Props = {
 
 
 export default function PreviewBlogList({query}: Props) {
-     const {data: posts} = usePreview(null, query)
-     conlose.log("Loading posts...", posts)
+     const posts = usePreview(null, query)
+
      return(
           <BlogList posts={posts}/>
      )
