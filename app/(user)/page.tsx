@@ -1,10 +1,9 @@
-import { previewData } from 'next/headers'
-import { groq } from 'next-sanity'
-import {client} from '../../lib/sanity.client'
-import PreviewSuspense from '../../components/utils/previewSuspense'
-import PreviewBlogList from '../../components/utils/previewBlogList'
-import BlogList from '../../components/utils/blogList'
-
+import { previewData } from "next/headers";
+import { groq } from "next-sanity";
+import { client } from "../../lib/sanity.client";
+import PreviewSuspense from "../../components/utils/previewSuspense";
+import PreviewBlogList from "../../components/utils/previewBlogList";
+import BlogList from "../../components/utils/blogList";
 
 const query = groq`
   *[_type == 'post'] {
@@ -13,32 +12,28 @@ const query = groq`
     categories[]->
   } | order(_createdAt desc) 
   
-`
+`;
 
 export const revalidate = 10;
 
 export default async function HomePage() {
-  if (!previewData()){
+  if (!previewData()) {
     return (
-      <PreviewSuspense fallback={(
-        <div role="status">
-          <p className="text-center text-lg animate-pulse text-[#F7AB0A]">
-            Loading...
-          </p>
-        </div>
-      )}>
-
-        <PreviewBlogList query={query}/>
+      <PreviewSuspense
+        fallback={
+          <div role="status">
+            <p className="text-center text-lg animate-pulse text-[#F7AB0A]">
+              Loading...
+            </p>
+          </div>
+        }
+      >
+        <PreviewBlogList query={query} />
       </PreviewSuspense>
-    )
+    );
   }
 
-  const posts = await client.fetch(query)
+  const posts = await client.fetch(query);
 
-
-  return (
-    <BlogList posts={posts}/>
-  )
+  return <BlogList posts={posts} />;
 }
-
-
